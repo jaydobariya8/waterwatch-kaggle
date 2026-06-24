@@ -1,0 +1,1 @@
+"""WaterWatch MCP server package."""

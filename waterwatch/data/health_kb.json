@@ -1,0 +1,179 @@
+{
+  "_meta": {
+    "title": "Contaminant → cited health-impact knowledge base",
+    "note": "Every statement is sourced. The Health-Impact agent may only emit sentences grounded in this KB; the Verifier rejects anything uncited.",
+    "sources": ["WHO Guidelines for Drinking-water Quality (4th ed.)", "BIS IS 10500:2012", "ICMR / national health advisories"]
+  },
+  "effects": {
+    "arsenic": {
+      "label": "Arsenic (As)",
+      "summary": "Long-term ingestion of arsenic above the limit causes skin lesions, and is linked to cancers of the skin, bladder and lung, and to cardiovascular disease. Effects are chronic and cumulative.",
+      "severity": "critical",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Arsenic: carcinogenic; chronic exposure causes skin lesions and internal cancers",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/arsenic"
+      }
+    },
+    "fluoride": {
+      "label": "Fluoride (F)",
+      "summary": "Fluoride above 1.5 mg/L causes dental fluorosis (mottling of teeth); prolonged high exposure causes skeletal fluorosis — stiffness, joint pain and bone deformity. Endemic across parts of India.",
+      "severity": "high",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Fluoride: dental and skeletal fluorosis above guideline value",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "nitrate": {
+      "label": "Nitrate (NO3)",
+      "summary": "High nitrate is dangerous for bottle-fed infants — it causes methaemoglobinaemia ('blue-baby syndrome'), reducing the blood's ability to carry oxygen. The 45 mg/L limit has no relaxation.",
+      "severity": "high",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Nitrate/Nitrite: methaemoglobinaemia risk in infants",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "lead": {
+      "label": "Lead (Pb)",
+      "summary": "Lead is a cumulative poison with no safe level. In children it impairs brain development and lowers IQ; in adults it raises blood pressure and harms the kidneys. The limit has no relaxation.",
+      "severity": "critical",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Lead: neurodevelopmental harm in children; no safe threshold",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/lead-poisoning-and-health"
+      }
+    },
+    "total_coliform": {
+      "label": "Total Coliform Bacteria",
+      "summary": "Coliform bacteria indicate the water is microbiologically unsafe and may carry pathogens. BIS requires they be absent in any 100 mL sample. Presence signals a contamination pathway.",
+      "severity": "high",
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012 Clause 5.2 — coliforms shall not be detectable; WHO microbial guidance",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "e_coli": {
+      "label": "E. coli",
+      "summary": "E. coli is direct evidence of faecal contamination and a high risk of waterborne disease — diarrhoea, cholera, typhoid and hepatitis. Any detectable count is unsafe; treat the water before drinking.",
+      "severity": "critical",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — E. coli: indicator of faecal contamination and enteric pathogen risk",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/drinking-water"
+      }
+    },
+    "iron": {
+      "label": "Iron (Fe)",
+      "summary": "Iron above 0.3 mg/L is mainly an aesthetic problem — metallic taste, reddish-brown staining of laundry and fixtures. It is not an acute health hazard at typical levels but makes water unpalatable.",
+      "severity": "low",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Iron: aesthetic (taste/staining), no health-based guideline",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "tds": {
+      "label": "Total Dissolved Solids (TDS)",
+      "summary": "High TDS affects taste (salty/bitter) and indicates high mineral content. Within the permissible band it is mainly a palatability issue; very high TDS can cause gastrointestinal irritation.",
+      "severity": "low",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — TDS: palatability and aesthetic acceptability",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "total_hardness": {
+      "label": "Total Hardness",
+      "summary": "Hard water is not a health hazard; it causes scaling in pipes and appliances, reduces soap lather, and can taste chalky. Very soft water may be more corrosive to plumbing.",
+      "severity": "low",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Hardness: no health-based guideline; aesthetic/scaling effects",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "turbidity": {
+      "label": "Turbidity",
+      "summary": "Turbidity is suspended particles that cloud the water. It is an indicator: high turbidity shields microbes from disinfection and signals possible contamination, so it must be cleared before disinfection.",
+      "severity": "moderate",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Turbidity: indicator affecting disinfection efficacy",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "ph": {
+      "label": "pH",
+      "summary": "Water outside pH 6.5–8.5 can be corrosive (low pH, leaching metals from pipes) or scale-forming (high pH) and reduces disinfection efficiency. pH itself has no direct health-based guideline.",
+      "severity": "moderate",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — pH: operational parameter affecting corrosion and disinfection",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "chloride": {
+      "label": "Chloride (Cl)",
+      "summary": "High chloride imparts a salty taste and can accelerate corrosion of plumbing. It is an aesthetic parameter with no direct health-based limit at the concentrations seen in drinking water.",
+      "severity": "low",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Chloride: taste and corrosion, aesthetic",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "sulphate": {
+      "label": "Sulphate (SO4)",
+      "summary": "Sulphate above ~250 mg/L can cause a noticeable taste and, at high levels, a temporary laxative effect, especially in people not accustomed to it.",
+      "severity": "low",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Sulphate: taste and laxative effect at high concentration",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "manganese": {
+      "label": "Manganese (Mn)",
+      "summary": "Excess manganese stains fixtures and laundry black/brown and affects taste; very high chronic exposure has been associated with neurological effects.",
+      "severity": "moderate",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Manganese: aesthetic staining; possible neurological effect at high exposure",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "aluminium": {
+      "label": "Aluminium (Al)",
+      "summary": "Aluminium in drinking water is mainly an operational/aesthetic concern (from coagulation), causing discolouration. It is kept low as a quality-of-treatment indicator.",
+      "severity": "low",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Aluminium: operational parameter from treatment",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "copper": {
+      "label": "Copper (Cu)",
+      "summary": "High copper, often from corroding pipes, causes a bitter taste and gastrointestinal upset (nausea, stomach cramps) on short-term exposure.",
+      "severity": "moderate",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — Copper: gastrointestinal effects on acute exposure",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "_default": {
+      "label": "Parameter",
+      "summary": "This parameter exceeds the BIS desirable limit. Its specific health impact is not in the curated knowledge base, so no health claim is asserted beyond the measured exceedance.",
+      "severity": "moderate",
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012 — exceedance recorded against the standard; no unsourced health claim made",
+        "url": "https://www.bis.gov.in/"
+      }
+    }
+  }
+}

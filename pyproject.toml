@@ -1,0 +1,41 @@
+[project]
+name = "waterwatch"
+version = "1.0.0"
+description = "A verifiable, civic-action multi-agent system for drinking-water safety (BIS 10500 grounded)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "WaterWatch builders" }]
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn>=0.27",
+    "pydantic>=2.6",
+    "python-multipart>=0.0.9",
+    "pypdf>=4.0",
+]
+
+[project.optional-dependencies]
+llm = ["google-generativeai>=0.8"]
+mcp = ["mcp>=1.2"]
+cloud = ["google-cloud-firestore>=2.16"]
+dev = ["pytest>=8.0", "httpx>=0.27"]
+
+[project.scripts]
+waterwatch-mcp = "mcp_server.server:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["waterwatch", "waterwatch.agents", "waterwatch.routers", "mcp_server"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.black]
+line-length = 88
+
+[tool.ruff]
+line-length = 88

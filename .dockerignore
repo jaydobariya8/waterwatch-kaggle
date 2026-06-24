@@ -1,0 +1,26 @@
+# Keep the build context small and free of secrets / local cruft.
+.venv/
+venv/
+env/
+.git/
+.gitignore
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# secrets & local state — never bake into the image
+.env
+*.key
+*-service-account*.json
+.waterwatch_store.json
+*.tmp
+
+# dev-only assets not needed at runtime
+docs/screenshots/
+.playwright-mcp/
+tests/
+WaterWatch_Project_Plan.pdf
+.DS_Store

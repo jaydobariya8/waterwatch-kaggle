@@ -1,0 +1,141 @@
+{
+  "_meta": {
+    "title": "Contaminant → cheapest-effective household treatment mapping",
+    "note": "Curated domain knowledge. Treatments are ordered cheapest-first among methods that are genuinely effective for the specific contaminant. Different contaminants need different treatments — this is not a generic 'buy an RO'.",
+    "sources": ["WHO Guidelines for Drinking-water Quality (4th ed.)", "BIS / CPCB guidance", "EPA point-of-use treatment guidance"]
+  },
+  "treatments": {
+    "arsenic": {
+      "contaminant_label": "Arsenic (As)",
+      "options": ["Activated alumina filter", "Reverse osmosis (RO)", "Arsenic-removal adsorption media (iron-oxide based)"],
+      "cheapest_effective": "Activated alumina filter",
+      "not_effective": ["Boiling", "Simple carbon filter", "Cloth filtration"],
+      "note": "Boiling does NOT remove arsenic and concentrates it. Use activated alumina or RO.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Arsenic — adsorption (activated alumina) and membrane (RO) are effective POU options",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "fluoride": {
+      "contaminant_label": "Fluoride (F)",
+      "options": ["Activated alumina filter", "Bone-char defluoridation", "Reverse osmosis (RO)"],
+      "cheapest_effective": "Activated alumina filter",
+      "not_effective": ["Boiling", "Carbon filter"],
+      "note": "Activated alumina is the standard low-cost defluoridation method used across India.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Fluoride — activated alumina / bone char / RO are recognised removal techniques",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "nitrate": {
+      "contaminant_label": "Nitrate (NO3)",
+      "options": ["Ion-exchange (anion) filter", "Reverse osmosis (RO)"],
+      "cheapest_effective": "Ion-exchange (anion) filter",
+      "not_effective": ["Boiling", "Carbon filter"],
+      "note": "Boiling increases nitrate concentration. Use ion-exchange or RO. Critical for infants (blue-baby syndrome).",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Nitrate/Nitrite — ion exchange and RO are effective; boiling is counterproductive",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "lead": {
+      "contaminant_label": "Lead (Pb)",
+      "options": ["Reverse osmosis (RO)", "Certified lead-removal activated-carbon block filter", "Distillation"],
+      "cheapest_effective": "Certified lead-removal activated-carbon block filter",
+      "not_effective": ["Boiling", "Sediment filter"],
+      "note": "Use a filter certified for lead reduction (NSF/ANSI 53). Flushing taps also reduces first-draw lead.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Lead — RO, certified carbon-block, and distillation reduce dissolved lead",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "total_hardness": {
+      "contaminant_label": "Total Hardness (Ca, Mg)",
+      "options": ["Ion-exchange water softener", "Reverse osmosis (RO)"],
+      "cheapest_effective": "Ion-exchange water softener",
+      "not_effective": ["Carbon filter"],
+      "note": "Hardness is an aesthetic/scaling issue, not an acute health risk; a softener is the targeted fix.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Hardness — ion-exchange softening is the standard treatment",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "total_coliform": {
+      "contaminant_label": "Total Coliform Bacteria",
+      "options": ["Boiling (rolling boil 1 min)", "UV disinfection", "Ultrafiltration (UF)", "Chlorination"],
+      "cheapest_effective": "Boiling (rolling boil 1 min)",
+      "not_effective": ["Carbon filter alone", "Sediment filter"],
+      "note": "Bacteria are the one contaminant boiling DOES fix cheaply. UV/UF/chlorination for continuous supply.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Microbial — boiling, UV, UF, and chlorination achieve microbial inactivation/removal",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "e_coli": {
+      "contaminant_label": "E. coli",
+      "options": ["Boiling (rolling boil 1 min)", "UV disinfection", "Ultrafiltration (UF)", "Chlorination"],
+      "cheapest_effective": "Boiling (rolling boil 1 min)",
+      "not_effective": ["Carbon filter alone", "Sediment filter"],
+      "note": "E. coli indicates faecal contamination — treat as urgent. Boil immediately; install UV/UF for ongoing safety.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Microbial — thermal/UV/membrane/chemical disinfection are effective",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "tds": {
+      "contaminant_label": "High TDS",
+      "options": ["Reverse osmosis (RO)"],
+      "cheapest_effective": "Reverse osmosis (RO)",
+      "not_effective": ["Boiling", "Carbon filter"],
+      "note": "Only RO (or distillation) meaningfully lowers total dissolved solids.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., TDS — membrane (RO) treatment for TDS reduction",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "iron": {
+      "contaminant_label": "Iron (Fe)",
+      "options": ["Aeration + sand filtration", "Oxidation-filtration (greensand)", "Reverse osmosis (RO)"],
+      "cheapest_effective": "Aeration + sand filtration",
+      "not_effective": ["Carbon filter alone"],
+      "note": "Iron is mostly aesthetic (taste/stains). Aeration-oxidation-filtration is the low-cost route.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Iron — oxidation and filtration; RO for dissolved iron",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "turbidity": {
+      "contaminant_label": "Turbidity",
+      "options": ["Sediment / cloth pre-filtration", "Sand filtration", "Coagulation + settling"],
+      "cheapest_effective": "Sediment / cloth pre-filtration",
+      "not_effective": [],
+      "note": "Turbidity shields microbes from disinfection — clear it first, then disinfect.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed., Turbidity — filtration/coagulation before disinfection",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    },
+    "_default": {
+      "contaminant_label": "General multi-contaminant",
+      "options": ["Reverse osmosis (RO) with UV stage"],
+      "cheapest_effective": "Reverse osmosis (RO) with UV stage",
+      "not_effective": [],
+      "note": "When several dissolved + microbial contaminants co-occur, an RO+UV unit is the broad-spectrum fallback.",
+      "citation": {
+        "source": "WHO",
+        "reference": "WHO GDWQ 4th ed. — multi-barrier RO+UV for mixed contamination",
+        "url": "https://www.who.int/publications/i/item/9789241549950"
+      }
+    }
+  }
+}

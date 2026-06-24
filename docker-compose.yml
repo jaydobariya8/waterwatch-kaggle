@@ -1,0 +1,33 @@
+# WaterWatch — one-command run on any OS (Windows, macOS, Linux) with Docker.
+#
+#   docker compose up --build         # build + run → http://localhost:8080
+#   docker compose down               # stop
+#
+# Runs fully offline. To enable Gemini, set GEMINI_API_KEY in your shell (or a .env
+# file next to this one) before `docker compose up` — it is passed through below.
+services:
+  waterwatch:
+    build: .
+    image: waterwatch:latest
+    container_name: waterwatch
+    ports:
+      - "8080:8080"
+    environment:
+      STORE_BACKEND: local
+      WATERWATCH_STORE_PATH: /data/store.json
+      LOG_LEVEL: INFO
+      # Optional — passed through from your shell/.env; empty if unset.
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      DATA_GOV_API_KEY: ${DATA_GOV_API_KEY:-}
+    volumes:
+      - ww_data:/data            # persists filed complaints across restarts
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0) if urllib.request.urlopen('http://localhost:8080/healthz').status==200 else sys.exit(1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  ww_data:

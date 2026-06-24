@@ -1,0 +1,26 @@
+# WaterWatch — Cloud Scheduler watchdog job (Day 3/5).
+# Hits the protected escalation endpoint daily; any complaint unresolved past
+# ESCALATION_DAYS is auto-escalated with a drafted RTI application.
+#
+# Create it with the gcloud command below (substitute SERVICE_URL and PROJECT):
+#
+#   gcloud scheduler jobs create http waterwatch-watchdog \
+#     --location=asia-south1 \
+#     --schedule="0 9 * * *" \
+#     --time-zone="Asia/Kolkata" \
+#     --uri="${SERVICE_URL}/api/v1/watchdog/run" \
+#     --http-method=POST \
+#     --oidc-service-account-email="waterwatch-scheduler@${PROJECT}.iam.gserviceaccount.com"
+#
+# Descriptor (for reference / IaC import):
+name: waterwatch-watchdog
+schedule: "0 9 * * *"          # 09:00 daily
+timeZone: "Asia/Kolkata"
+httpTarget:
+  uri: "${SERVICE_URL}/api/v1/watchdog/run"
+  httpMethod: POST
+  oidcToken:
+    serviceAccountEmail: "waterwatch-scheduler@${PROJECT}.iam.gserviceaccount.com"
+retryConfig:
+  retryCount: 3
+  maxRetryDuration: "600s"

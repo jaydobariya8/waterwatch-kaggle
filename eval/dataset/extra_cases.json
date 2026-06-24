@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "title": "Extra labelled text cases for the eval harness",
+    "note": "Raw-text reports (not in the bundled sample set) with known-correct verdicts, used to broaden evaluation coverage beyond the demo samples."
+  },
+  "cases": [
+    {
+      "id": "lead_plumbing",
+      "title": "Lead from old plumbing",
+      "pincode": "400001",
+      "text": "Water Test\npH 7.1\nTDS 410 mg/L\nLead 0.05 mg/L\nIron 0.2 mg/L\nTotal Coliform 0 MPN/100mL",
+      "expected": {"verdict": "UNSAFE", "must_breach": ["lead"], "must_not_breach": ["iron"]}
+    },
+    {
+      "id": "borderline_fluoride_concern",
+      "title": "Fluoride in the concern band (within permissible)",
+      "pincode": "560001",
+      "text": "Report\npH 7.3\nTDS 430 mg/L\nFluoride 1.2 mg/L\nNitrate 20 mg/L\nArsenic 0.003 mg/L",
+      "expected": {"verdict": "CAUTION", "must_breach": [], "must_not_breach": ["arsenic", "nitrate"]}
+    },
+    {
+      "id": "all_clean_text",
+      "title": "Fully clean supply (text)",
+      "pincode": "682001",
+      "text": "Analysis\npH 7.0\nTurbidity 0.3 NTU\nTDS 280 mg/L\nFluoride 0.5 mg/L\nNitrate 8 mg/L\nArsenic 0.001 mg/L\nLead 0.001 mg/L\nTotal Coliform 0 MPN/100mL\nE. coli 0 MPN/100mL",
+      "expected": {"verdict": "SAFE", "must_breach": [], "must_not_breach": ["fluoride", "arsenic", "lead"]}
+    }
+  ]
+}

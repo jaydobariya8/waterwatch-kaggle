@@ -1,0 +1,351 @@
+{
+  "_meta": {
+    "standard": "IS 10500:2012",
+    "title": "Indian Standard — Drinking Water — Specification (Second Revision)",
+    "publisher": "Bureau of Indian Standards (BIS)",
+    "note": "Acceptable limit = desirable. Permissible limit = max permissible in absence of an alternate source. 'no_relaxation: true' means there is no relaxation above the acceptable limit and any exceedance is a hard breach.",
+    "url": "https://www.bis.gov.in/",
+    "snapshot_date": "2012-01-01"
+  },
+  "parameters": {
+    "ph": {
+      "label": "pH value",
+      "symbol": "pH",
+      "unit": "",
+      "acceptable_min": 6.5,
+      "acceptable_max": 8.5,
+      "permissible_min": 6.5,
+      "permissible_max": 8.5,
+      "no_relaxation": true,
+      "kind": "range",
+      "category": "physical",
+      "aliases": ["ph", "ph value", "p h"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 1 (Organoleptic & Physical)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "turbidity": {
+      "label": "Turbidity",
+      "symbol": "NTU",
+      "unit": "NTU",
+      "acceptable_max": 1.0,
+      "permissible_max": 5.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "physical",
+      "aliases": ["turbidity"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 2 (Organoleptic & Physical)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "tds": {
+      "label": "Total Dissolved Solids",
+      "symbol": "TDS",
+      "unit": "mg/L",
+      "acceptable_max": 500.0,
+      "permissible_max": 2000.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "physical",
+      "aliases": ["tds", "total dissolved solids", "dissolved solids"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 7 (Organoleptic & Physical)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "total_hardness": {
+      "label": "Total Hardness (as CaCO3)",
+      "symbol": "TH",
+      "unit": "mg/L",
+      "acceptable_max": 200.0,
+      "permissible_max": 600.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["total hardness", "hardness", "hardness as caco3", "caco3"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 10 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "chloride": {
+      "label": "Chloride (as Cl)",
+      "symbol": "Cl",
+      "unit": "mg/L",
+      "acceptable_max": 250.0,
+      "permissible_max": 1000.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["chloride", "cl", "chlorides"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 11 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "fluoride": {
+      "label": "Fluoride (as F)",
+      "symbol": "F",
+      "unit": "mg/L",
+      "acceptable_max": 1.0,
+      "permissible_max": 1.5,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "toxic",
+      "aliases": ["fluoride", "f", "fluorides"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 15 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "nitrate": {
+      "label": "Nitrate (as NO3)",
+      "symbol": "NO3",
+      "unit": "mg/L",
+      "acceptable_max": 45.0,
+      "permissible_max": 45.0,
+      "no_relaxation": true,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["nitrate", "no3", "nitrates", "nitrate as no3"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 23 (General Parameters), no relaxation",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "arsenic": {
+      "label": "Arsenic (as As)",
+      "symbol": "As",
+      "unit": "mg/L",
+      "acceptable_max": 0.01,
+      "permissible_max": 0.05,
+      "no_relaxation": false,
+      "health_critical": true,
+      "kind": "max",
+      "category": "toxic",
+      "aliases": ["arsenic", "as"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 3, S.No. 2 (Toxic Substances)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "lead": {
+      "label": "Lead (as Pb)",
+      "symbol": "Pb",
+      "unit": "mg/L",
+      "acceptable_max": 0.01,
+      "permissible_max": 0.01,
+      "no_relaxation": true,
+      "kind": "max",
+      "category": "toxic",
+      "aliases": ["lead", "pb"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 3, S.No. 8 (Toxic Substances), no relaxation",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "iron": {
+      "label": "Iron (as Fe)",
+      "symbol": "Fe",
+      "unit": "mg/L",
+      "acceptable_max": 0.3,
+      "permissible_max": 0.3,
+      "no_relaxation": true,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["iron", "fe"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 13 (General Parameters), no relaxation",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "total_coliform": {
+      "label": "Total Coliform Bacteria",
+      "symbol": "TC",
+      "unit": "MPN/100mL",
+      "acceptable_max": 0.0,
+      "permissible_max": 0.0,
+      "no_relaxation": true,
+      "kind": "absent",
+      "category": "bacteriological",
+      "aliases": ["total coliform", "total coliforms", "coliform", "coliforms", "tc"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Clause 5.2 — shall not be detectable in any 100 mL sample",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "e_coli": {
+      "label": "E. coli / Thermotolerant Coliform",
+      "symbol": "E. coli",
+      "unit": "MPN/100mL",
+      "acceptable_max": 0.0,
+      "permissible_max": 0.0,
+      "no_relaxation": true,
+      "kind": "absent",
+      "category": "bacteriological",
+      "aliases": ["e. coli", "e.coli", "e coli", "ecoli", "escherichia coli", "faecal coliform", "fecal coliform"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Clause 5.2 — shall not be detectable in any 100 mL sample",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "sulphate": {
+      "label": "Sulphate (as SO4)",
+      "symbol": "SO4",
+      "unit": "mg/L",
+      "acceptable_max": 200.0,
+      "permissible_max": 400.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["sulphate", "sulfate", "so4"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 21 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "total_alkalinity": {
+      "label": "Total Alkalinity (as CaCO3)",
+      "symbol": "ALK",
+      "unit": "mg/L",
+      "acceptable_max": 200.0,
+      "permissible_max": 600.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["total alkalinity", "alkalinity"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 12 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "calcium": {
+      "label": "Calcium (as Ca)",
+      "symbol": "Ca",
+      "unit": "mg/L",
+      "acceptable_max": 75.0,
+      "permissible_max": 200.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["calcium", "ca"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 16 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "magnesium": {
+      "label": "Magnesium (as Mg)",
+      "symbol": "Mg",
+      "unit": "mg/L",
+      "acceptable_max": 30.0,
+      "permissible_max": 100.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["magnesium", "mg"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 17 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "copper": {
+      "label": "Copper (as Cu)",
+      "symbol": "Cu",
+      "unit": "mg/L",
+      "acceptable_max": 0.05,
+      "permissible_max": 1.5,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["copper", "cu"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 18 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "manganese": {
+      "label": "Manganese (as Mn)",
+      "symbol": "Mn",
+      "unit": "mg/L",
+      "acceptable_max": 0.1,
+      "permissible_max": 0.3,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["manganese", "mn"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 19 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "zinc": {
+      "label": "Zinc (as Zn)",
+      "symbol": "Zn",
+      "unit": "mg/L",
+      "acceptable_max": 5.0,
+      "permissible_max": 15.0,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "general",
+      "aliases": ["zinc", "zn"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 20 (General Parameters)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "aluminium": {
+      "label": "Aluminium (as Al)",
+      "symbol": "Al",
+      "unit": "mg/L",
+      "acceptable_max": 0.03,
+      "permissible_max": 0.2,
+      "no_relaxation": false,
+      "kind": "max",
+      "category": "toxic",
+      "aliases": ["aluminium", "aluminum", "al"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 3, S.No. 1 (Toxic Substances)",
+        "url": "https://www.bis.gov.in/"
+      }
+    },
+    "residual_chlorine": {
+      "label": "Residual Free Chlorine",
+      "symbol": "Cl2",
+      "unit": "mg/L",
+      "acceptable_min": 0.2,
+      "permissible_min": 0.2,
+      "no_relaxation": false,
+      "kind": "min",
+      "category": "disinfection",
+      "aliases": ["residual chlorine", "free chlorine", "residual free chlorine", "cl2"],
+      "citation": {
+        "source": "BIS",
+        "reference": "IS 10500:2012, Table 1, S.No. 22 — min 0.2 mg/L at consumer end",
+        "url": "https://www.bis.gov.in/"
+      }
+    }
+  }
+}

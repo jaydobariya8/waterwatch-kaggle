@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WaterWatch — prove your water is safe, then act</title>
+  <meta name="description" content="WaterWatch turns an unreadable water lab report into a verified safety verdict with citation receipts — then drafts the complaint and escalates with an RTI." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ambient water backdrop -->
+  <div class="water-bg" aria-hidden="true">
+    <div class="caustic c1"></div>
+    <div class="caustic c2"></div>
+  </div>
+
+  <!-- ───────────────────────── top bar ───────────────────────── -->
+  <header class="topbar">
+    <a class="brand" href="/">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 3C16 3 6 14 6 21a10 10 0 0 0 20 0C26 14 16 3 16 3Z" fill="url(#dropg)"/>
+        <path d="M20.5 19.5a4.5 4.5 0 0 1-7 3.7" fill="none" stroke="#06222c" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>
+        <defs><linearGradient id="dropg" x1="6" y1="3" x2="26" y2="31" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#7af0db"/><stop offset="1" stop-color="#19a594"/>
+        </linearGradient></defs>
+      </svg>
+      <span class="brand-name">Water<span>Watch</span></span>
+    </a>
+    <div class="topbar-meta">
+      <span class="eyebrow">BIS 10500 · Agents for Good</span>
+      <span class="status-chip" id="statusChip" title="LLM mode">
+        <span class="dot" id="statusDot"></span><span id="statusText">checking…</span>
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <!-- ───────────────────────── hero ───────────────────────── -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker">Verifiable civic-action agent</p>
+        <h1 class="hero-title">
+          Don't just hear your water is unsafe.
+          <span class="grad">See the receipts</span> — then make someone fix it.
+        </h1>
+        <p class="hero-sub">
+          Upload a lab report. A team of six specialist agents reads it, checks every value against
+          the BIS&nbsp;10500 standard, and explains the risk — with a citation on every single claim.
+          A verifier agent blocks anything it can't cite. Then it drafts the complaint and escalates
+          with an RTI if you're ignored.
+        </p>
+        <ul class="trust-row">
+          <li><span class="tick">✓</span> Citation receipt on every number</li>
+          <li><span class="tick">✓</span> Verifier blocks uncited claims</li>
+          <li><span class="tick">✓</span> Files complaints &amp; RTIs</li>
+        </ul>
+      </div>
+
+      <!-- input console -->
+      <div class="console" id="console">
+        <div class="console-head">
+          <span class="console-title">Analyze a report</span>
+          <span class="console-sub">runs the full agent pipeline</span>
+        </div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab is-active" data-tab="sample" role="tab">Try a sample</button>
+          <button class="tab" data-tab="paste" role="tab">Paste text</button>
+          <button class="tab" data-tab="upload" role="tab">Upload file</button>
+        </div>
+
+        <!-- sample tab -->
+        <div class="tabpane is-active" data-pane="sample">
+          <p class="pane-hint">Real Indian water scenarios with known-correct verdicts.</p>
+          <div class="sample-grid" id="sampleGrid"><div class="skeleton-chip"></div><div class="skeleton-chip"></div></div>
+        </div>
+
+        <!-- paste tab -->
+        <div class="tabpane" data-pane="paste">
+          <textarea id="reportText" class="report-input" rows="7" placeholder="Paste the parameters from your report, e.g.&#10;pH 7.9&#10;Fluoride 2.1 mg/L&#10;Nitrate 52 mg/L&#10;Arsenic 0.003 mg/L"></textarea>
+          <input id="pastePincode" class="text-field" type="text" inputmode="numeric" maxlength="6" placeholder="Pincode (optional) — e.g. 342001" />
+        </div>
+
+        <!-- upload tab -->
+        <div class="tabpane" data-pane="upload">
+          <label class="dropzone" id="dropzone">
+            <input id="fileInput" type="file" accept="application/pdf,image/*" hidden />
+            <svg viewBox="0 0 24 24" class="dz-icon" aria-hidden="true"><path d="M12 16V4m0 0 4 4m-4-4L8 8M5 16v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="dz-text">Drop a PDF or photo of the report</span>
+            <span class="dz-sub" id="dzSub">Gemini vision reads it · or set <code>GEMINI_API_KEY</code> for best results</span>
+          </label>
+          <input id="uploadPincode" class="text-field" type="text" inputmode="numeric" maxlength="6" placeholder="Pincode (optional)" />
+        </div>
+
+        <label class="demo-toggle">
+          <input type="checkbox" id="demoToggle" />
+          <span class="switch"></span>
+          <span class="demo-label">Demonstrate the verifier <em>catching itself</em></span>
+        </label>
+
+        <button class="analyze-btn" id="analyzeBtn">
+          <span class="btn-label">Analyze water</span>
+          <svg viewBox="0 0 24 24" class="btn-arrow" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="console-foot" id="consoleFoot"></p>
+      </div>
+
+      <div class="wave-divider" aria-hidden="true">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0 40 C 240 80 480 0 720 30 C 960 60 1200 10 1440 40 L1440 80 L0 80 Z" fill="currentColor"/></svg>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── pipeline rail ───────────────────────── -->
+    <section class="pipeline-wrap" id="pipelineWrap" hidden>
+      <div class="section-head">
+        <span class="sec-eyebrow">six specialists, one job</span>
+        <h2 class="sec-title">The agent pipeline</h2>
+      </div>
+      <ol class="pipeline" id="pipeline"></ol>
+    </section>
+
+    <!-- ───────────────────────── results ───────────────────────── -->
+    <section class="results" id="results" hidden>
+      <!-- verdict banner -->
+      <div class="verdict" id="verdict"></div>
+
+      <div class="result-grid">
+        <!-- left column: the lab receipt + verifier -->
+        <div class="col-left">
+          <article class="receipt" id="receipt"></article>
+          <article class="verifier-card" id="verifierCard"></article>
+        </div>
+
+        <!-- right column: health, area, filtration -->
+        <div class="col-right">
+          <article class="panel" id="healthPanel"></article>
+          <article class="panel" id="areaPanel"></article>
+          <article class="panel" id="filtrationPanel"></article>
+        </div>
+      </div>
+
+      <!-- action zone -->
+      <div class="action-zone" id="actionZone"></div>
+    </section>
+  </main>
+
+  <!-- ───────────────────────── footer ───────────────────────── -->
+  <footer class="footer">
+    <div class="course-map">
+      <span class="footer-eyebrow">how the 5-day intensive built this</span>
+      <div class="days" id="daysStrip"></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="stack">ADK · Gemini · MCP · A2A · Cloud Run · Firestore</span>
+      <span class="made">WaterWatch — verify, then escalate.</span>
+    </div>
+  </footer>
+
+  <div class="toast-host" id="toastHost" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

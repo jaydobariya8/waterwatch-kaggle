@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "title": "Bundled sample lab reports — drive the offline demo and the eval harness",
+    "note": "Each sample carries the raw report text (as the Parser agent would receive it), the metadata printed on the report, and a labelled expected verdict for the evaluation harness."
+  },
+  "samples": [
+    {
+      "id": "arsenic_bihar",
+      "title": "Arsenic-contaminated groundwater — Patna, Bihar",
+      "subtitle": "Hand-pump sample · the classic Gangetic-plain arsenic case",
+      "location": "Kankarbagh, Patna, Bihar",
+      "pincode": "800001",
+      "collected_on": "2025-03-14",
+      "text": "WATER QUALITY TEST REPORT\nLab: Bihar State Water Testing Laboratory\nSample ID: BR-PAT-22418\nLocation: Kankarbagh, Patna  Pincode: 800001\nDate of Collection: 14-03-2025\nSource: Hand pump (borewell)\n\nParameter                 Result      Unit\npH value                  7.4\nTurbidity                 0.8         NTU\nTotal Dissolved Solids    612         mg/L\nTotal Hardness            240         mg/L\nChloride                  140         mg/L\nFluoride                  0.6         mg/L\nNitrate                   12          mg/L\nArsenic                   0.032       mg/L\nIron                      0.45        mg/L\nLead                      0.004       mg/L\nTotal Coliform            0           MPN/100mL\nE. coli                   0           MPN/100mL",
+      "expected": {
+        "verdict": "UNSAFE",
+        "must_breach": ["arsenic"],
+        "must_not_breach": ["lead"]
+      }
+    },
+    {
+      "id": "fluoride_rajasthan",
+      "title": "High fluoride + nitrate — Jodhpur, Rajasthan",
+      "subtitle": "Desert-belt well · fluorosis country",
+      "location": "Mandore, Jodhpur, Rajasthan",
+      "pincode": "342001",
+      "collected_on": "2025-02-02",
+      "text": "DRINKING WATER ANALYSIS REPORT\nLab: Rajasthan PHED Regional Lab, Jodhpur\nSample No: RJ-JOD-1187\nVillage/Area: Mandore   PIN: 342001\nCollected: 02/02/2025\nSource: Community open well\n\nTest Parameter            Observed Value   Units\npH                        7.9\nTurbidity                 1.4              NTU\nTDS                       1180             mg/L\nTotal Hardness (as CaCO3) 480              mg/L\nChloride                  320              mg/L\nFluoride (as F)           2.1              mg/L\nNitrate (as NO3)          52               mg/L\nSulphate                  210              mg/L\nArsenic                   0.003            mg/L\nIron                      0.2              mg/L",
+      "expected": {
+        "verdict": "UNSAFE",
+        "must_breach": ["fluoride", "nitrate"],
+        "must_not_breach": ["arsenic"]
+      }
+    },
+    {
+      "id": "bacterial_urban",
+      "title": "Bacterial contamination — Delhi municipal supply",
+      "subtitle": "Tap sample after a supply-line break · faecal indicators present",
+      "location": "Connaught Place area, New Delhi",
+      "pincode": "110001",
+      "collected_on": "2025-06-10",
+      "text": "MUNICIPAL WATER TEST CERTIFICATE\nLab: Delhi Jal Board Quality Control\nSample Ref: DJB-CP-90233\nSampling Point: Domestic tap, CP area, New Delhi - 110001\nDate: 10 June 2025\n\nParameter                 Value     Unit\npH                        7.6\nTurbidity                 6.2       NTU\nTotal Dissolved Solids    380       mg/L\nResidual Free Chlorine    0.0       mg/L\nTotal Coliform            18        MPN/100mL\nE. coli                   8         MPN/100mL\nFluoride                  0.5       mg/L\nNitrate                   9         mg/L\nArsenic                   0.001     mg/L",
+      "expected": {
+        "verdict": "UNSAFE",
+        "must_breach": ["e_coli", "total_coliform", "turbidity"],
+        "must_not_breach": ["fluoride"]
+      }
+    },
+    {
+      "id": "safe_supply",
+      "title": "Clean treated supply — passes BIS",
+      "subtitle": "Well-run RWA borewell with treatment · the 'all clear' case",
+      "location": "Sector 21, Gurugram, Haryana",
+      "pincode": "110001",
+      "collected_on": "2025-05-21",
+      "text": "WATER QUALITY ANALYSIS\nLab: NABL Accredited Lab, Gurugram\nSample ID: HR-GGN-5521\nLocation: Sector 21 RWA, Gurugram  PIN: 110001\nCollected on: 21-05-2025\nSource: Treated borewell (RO + UV)\n\nParameter                 Result    Unit\npH                        7.2\nTurbidity                 0.4       NTU\nTotal Dissolved Solids    320       mg/L\nTotal Hardness            150       mg/L\nChloride                  120       mg/L\nFluoride                  0.6       mg/L\nNitrate                   10        mg/L\nArsenic                   0.002     mg/L\nIron                      0.1       mg/L\nLead                      0.002     mg/L\nResidual Free Chlorine    0.3       mg/L\nTotal Coliform            0         MPN/100mL\nE. coli                   0         MPN/100mL",
+      "expected": {
+        "verdict": "SAFE",
+        "must_breach": [],
+        "must_not_breach": ["arsenic", "fluoride", "e_coli"]
+      }
+    },
+    {
+      "id": "hard_water_caution",
+      "title": "Hard, high-TDS water — within permissible (caution)",
+      "subtitle": "Aesthetic exceedances, no acute health risk · the 'caution' case",
+      "location": "Rajkot, Gujarat",
+      "pincode": "342001",
+      "collected_on": "2025-04-08",
+      "text": "WATER TEST REPORT\nLab: Gujarat Jal Lab, Rajkot\nSample: GJ-RAJ-3380\nArea: Rajkot   PIN: 342001\nDate: 08-04-2025\nSource: Municipal supply\n\nParameter                 Value     Unit\npH                        7.8\nTurbidity                 0.9       NTU\nTotal Dissolved Solids    1450      mg/L\nTotal Hardness            520       mg/L\nChloride                  600       mg/L\nSulphate                  260       mg/L\nFluoride                  0.8       mg/L\nNitrate                   18        mg/L\nArsenic                   0.004     mg/L\nTotal Coliform            0         MPN/100mL",
+      "expected": {
+        "verdict": "CAUTION",
+        "must_breach": [],
+        "must_not_breach": ["arsenic", "fluoride", "e_coli"]
+      }
+    }
+  ]
+}

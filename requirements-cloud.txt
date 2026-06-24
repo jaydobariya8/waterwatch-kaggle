@@ -1,0 +1,8 @@
+# WaterWatch — optional cloud / AI extras.
+# Install these to enable Gemini parsing, the standalone MCP server, and Firestore.
+-r requirements.txt
+google-generativeai>=0.8     # Gemini multimodal parsing + drafting
+mcp>=1.2                     # standalone Model Context Protocol server
+google-cloud-firestore>=2.16 # Firestore-backed memory for live deployment
+pytest>=8.0                  # test runner
+httpx>=0.27                  # FastAPI TestClient dependency

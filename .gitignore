@@ -1,0 +1,34 @@
+# --- Secrets (NEVER commit) --------------------------------------------------
+.env
+*.key
+*-service-account*.json
+service-account*.json
+credentials.json
+
+# --- Local state -------------------------------------------------------------
+.waterwatch_store.json
+*.tmp
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# --- OS / editor -------------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# --- Test/coverage -----------------------------------------------------------
+.coverage
+htmlcov/
