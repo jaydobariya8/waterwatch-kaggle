@@ -15,6 +15,12 @@ const state = {
   file: null,
   lastResult: null,
   filed: null,
+  activeView: "analyzer",
+  map: null,
+  markers: [],
+  complaints: [],
+  clusterThreshold: 3,
+  parameterLabels: {},
 };
 
 /* ── icons for the six agents ───────────────────────────────────────────── */
@@ -61,17 +67,50 @@ async function api(path, opts = {}) {
 async function init() {
   renderDays();
   wireTabs();
+  wireViewTabs();
   wireDropzone();
   $("#analyzeBtn").addEventListener("click", runAnalysis);
+
+  // Wire collective petition modal
+  $("#closeModalBtn").addEventListener("click", closeCollectiveModal);
+  $("#closeModalBtn2").addEventListener("click", closeCollectiveModal);
+  $("#copyCollectiveBtn").addEventListener("click", () => {
+    if (state.currentModalDraft) {
+      navigator.clipboard?.writeText(state.currentModalDraft);
+      toast("Collective petition copied", "ok");
+    }
+  });
+
   try {
     const meta = await api("/api/v1/meta");
     const live = meta.llm_enabled;
+    state.clusterThreshold = meta.cluster_threshold || 3;
     $("#statusDot").className = "dot " + (live ? "live" : "offline");
     $("#statusText").textContent = live ? "Gemini live" : "offline engine";
     if (!live) $("#dzSub").innerHTML = 'Best with <code>GEMINI_API_KEY</code> · paste text or use a sample offline';
   } catch (_) {
     $("#statusText").textContent = "api unreachable";
   }
+
+  // Load parameter labels for map/dashboard summaries
+  try {
+    const paramsData = await api("/api/v1/parameters");
+    state.parameterLabels = {};
+    paramsData.parameters.forEach((p) => {
+      state.parameterLabels[p.key] = p.label;
+    });
+  } catch (_) {
+    state.parameterLabels = {
+      arsenic: "Arsenic",
+      fluoride: "Fluoride",
+      nitrate: "Nitrate",
+      lead: "Lead",
+      e_coli: "E. coli",
+      total_coliform: "Total Coliform",
+      turbidity: "Turbidity"
+    };
+  }
+
   loadSamples();
 }
 
@@ -401,12 +440,43 @@ function renderFiltration(d) {
 function renderAction(d) {
   const zone = $("#actionZone");
   if (!d.complaint_draft) {
+    let title = "";
+    let desc = "";
+    let btnText = "";
+    let subject = "";
+    let body = "";
+
     if (d.verdict === "SAFE") {
-      zone.innerHTML = `<div class="action-card"><div class="action-title">No action needed</div>
-        <p class="vc-body" style="margin-top:8px">Every parameter is within BIS limits. Keep this receipt for your records and re-test periodically.</p></div>`;
+      title = "Water is Safe";
+      desc = "Every parameter is within BIS limits. Share this result to update your neighborhood's water safety status on the map!";
+      btnText = "Share Safe Status on Map";
+      subject = "Verified Safe Water Report";
+      body = "This is a verified test report showing drinking water meets all Indian Standard IS 10500:2012 specifications. All checked parameters are within safe acceptable ranges.";
+    } else if (d.verdict === "CAUTION") {
+      title = "Water Needs Caution";
+      desc = "Parameters are above desirable limits but within permissible limits. Log this report to the community map to track local water conditions.";
+      btnText = "Share Status on Map";
+      subject = "Caution: Minor exceedance reported";
+      body = "This is a verified test report showing minor parameter warnings under IS 10500:2012. Hardness, TDS or other aesthetic limits are slightly elevated, but no severe health contaminants breached permissible limits.";
     } else {
       zone.innerHTML = "";
+      return;
     }
+
+    zone.innerHTML = `
+      <div class="action-card">
+        <div class="action-head">
+          <span class="action-title">${title}</span>
+          <span class="gate-tag">🔒 save report to map</span>
+        </div>
+        <p class="vc-body" style="margin-bottom: 16px;">${desc}</p>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="fileBtn">${btnText}</button>
+        </div>
+        <div id="postFile"></div>
+      </div>`;
+
+    $("#fileBtn").addEventListener("click", () => fileSafeOrCautionReport(d, subject, body));
     return;
   }
   const c = d.complaint_draft;
@@ -430,6 +500,45 @@ function renderAction(d) {
   });
 }
 
+async function fileSafeOrCautionReport(d, subject, body) {
+  const btn = $("#fileBtn");
+  btn.disabled = true;
+  btn.textContent = "Saving…";
+  try {
+    const res = await api("/api/v1/complaints", {
+      method: "POST",
+      body: JSON.stringify({
+        request_id: d.request_id,
+        pincode: d.parsed.pincode,
+        location: d.parsed.location,
+        sample_id: d.parsed.sample_id,
+        verdict: d.verdict,
+        breached_parameters: d.breaches.map((b) => b.key),
+        subject: subject,
+        body: body,
+      }),
+    });
+    state.filed = res.complaint;
+    toast("Report logged to map · " + res.complaint.id, "ok");
+    loadDashboard(); // Refresh map data in background
+    const post = $("#postFile");
+    post.innerHTML = `
+      <div class="filed-banner">✅ Report logged as <span class="fid">${res.complaint.id}</span> · status <b>${res.complaint.status}</b> · mapped on the Community Map</div>
+      <div class="action-buttons">
+        <a class="btn btn-ghost" id="shareTweetBtn" target="_blank" rel="noopener">🐦 Share on X</a>
+        <a class="btn btn-ghost" id="shareWaBtn" target="_blank" rel="noopener">💬 Share on WhatsApp</a>
+      </div>
+    `;
+    const { tweetUrl, whatsappUrl } = generateSocialMessages(d);
+    $("#shareTweetBtn").href = tweetUrl;
+    $("#shareWaBtn").href = whatsappUrl;
+  } catch (err) {
+    toast(err.message, "err");
+    btn.disabled = false;
+    btn.textContent = "Share Status on Map";
+  }
+}
+
 async function fileComplaint(d) {
   const btn = $("#fileBtn");
   btn.disabled = true;
@@ -451,6 +560,7 @@ async function fileComplaint(d) {
     });
     state.filed = res.complaint;
     toast("Complaint filed · " + res.complaint.id, "ok");
+    loadDashboard(); // Refresh map data in background
     const post = $("#postFile");
     const civic = res.civic;
     post.innerHTML = `
@@ -460,9 +570,14 @@ async function fileComplaint(d) {
         : `<div class="civic-note">The Watchdog will follow up. If unresolved past the threshold, it drafts an <b>RTI escalation</b> automatically.</div>`}
       <div class="action-buttons">
         <button class="btn btn-gold" id="escalateBtn">Escalate now → draft RTI</button>
+        <a class="btn btn-ghost" id="shareTweetBtn" target="_blank" rel="noopener">🐦 Share on X</a>
+        <a class="btn btn-ghost" id="shareWaBtn" target="_blank" rel="noopener">💬 Share on WhatsApp</a>
       </div>
       <div id="rtiBox"></div>`;
     $("#escalateBtn").addEventListener("click", () => escalate(res.complaint.id));
+    const { tweetUrl, whatsappUrl } = generateSocialMessages(d);
+    $("#shareTweetBtn").href = tweetUrl;
+    $("#shareWaBtn").href = whatsappUrl;
   } catch (err) {
     toast(err.message, "err");
     btn.disabled = false;
@@ -530,5 +645,290 @@ function toast(msg, kind = "ok") {
   $("#toastHost").appendChild(t);
   setTimeout(() => { t.style.opacity = "0"; setTimeout(() => t.remove(), 300); }, 3200);
 }
+
+function generateSocialMessages(d) {
+  const pin = d.parsed.pincode || "______";
+  const breaches = d.breaches.filter((b) => b.status === "breach");
+  const names = breaches.map((b) => b.label).join(" & ");
+  const breachDetail = names ? `(${names} exceed permissible limits)` : "due to parameter breaches";
+  
+  const isDelhi = pin.startsWith("11");
+  const boardTag = isDelhi ? " @DelhiJalBoard" : "";
+  
+  let tweetText = "";
+  let whatsappText = "";
+  
+  if (d.verdict === "SAFE") {
+    tweetText = `My drinking water in pincode ${pin} is verified SAFE under BIS 10500 standards. Check your water safety at #WaterWatch!`;
+    whatsappText = `💧 Good news! Drinking water at pincode ${pin} has been verified SAFE (all checked parameters are within safe limits under IS 10500). Verify your water test report with citation receipts on WaterWatch.`;
+  } else if (d.verdict === "CAUTION") {
+    tweetText = `My drinking water in pincode ${pin} is verified under CAUTION (minor aesthetic limits exceeded). Check details at #WaterWatch.`;
+    whatsappText = `⚠️ WATER CAUTION: Drinking water at pincode ${pin} is verified under CAUTION (minor desirable limits exceeded, but no acute health hazards found). Review details and filtration advice on WaterWatch.`;
+  } else {
+    tweetText = `My drinking water in pincode ${pin} is verified UNSAFE ${breachDetail}. Requesting action!${boardTag} @CPCB_OFFICIAL #WaterWatch`;
+    whatsappText = `🚨 WATER QUALITY ALERT for pincode ${pin}! A drinking water sample has been verified UNSAFE ${breachDetail}. Residents are advised to check filters and avoid drinking untreated water. Review health limits and treatment receipts on WaterWatch.`;
+  }
+
+  return {
+    tweetUrl: `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`,
+    whatsappUrl: `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappText)}`,
+  };
+}
+
+/* ── view switching and dashboard mapping ───────────────────────────────── */
+const PINCODE_MAP = {
+  "110001": [28.6304, 77.2177],
+  "110059": [28.6214, 77.0601], // Uttam Nagar, Delhi
+  "122001": [28.4595, 77.0266], // Gurugram, Haryana
+  "342001": [26.2389, 73.0243], // Jodhpur
+  "360001": [22.3039, 70.8022], // Rajkot, Gujarat
+  "800001": [25.5941, 85.1376],
+  "400001": [18.9220, 72.8347],
+  "560001": [12.9716, 77.5946],
+  "600001": [13.0827, 80.2707],
+  "700001": [22.5726, 88.3639],
+};
+
+function getCoordinates(pincode) {
+  if (PINCODE_MAP[pincode]) {
+    return PINCODE_MAP[pincode];
+  }
+  const code = parseInt(pincode, 10) || 110001;
+  const lat = 16 + ((code % 97) / 97) * 14;
+  const lon = 72 + ((code % 89) / 89) * 16;
+  return [lat, lon];
+}
+
+function getPincodeStatus(pincodeComplaints) {
+  const active = pincodeComplaints.filter((c) => c.status !== "resolved");
+  if (active.length === 0) return "safe";
+
+  const unsafeCount = active.filter((c) => c.verdict === "UNSAFE").length;
+  if (unsafeCount >= state.clusterThreshold) {
+    return "cluster";
+  }
+  if (active.some((c) => c.verdict === "UNSAFE")) {
+    return "unsafe";
+  }
+  if (active.some((c) => c.verdict === "CAUTION")) {
+    return "caution";
+  }
+  return "safe";
+}
+
+function wireViewTabs() {
+  $$(".nav-tab").forEach((tab) => {
+    tab.addEventListener("click", async () => {
+      $$(".nav-tab").forEach((t) => t.classList.remove("is-active"));
+      tab.classList.add("is-active");
+      const viewName = tab.dataset.view;
+      state.activeView = viewName;
+
+      if (viewName === "analyzer") {
+        $("#analyzerView").classList.add("active");
+        $("#dashboardView").style.display = "none";
+      } else {
+        $("#analyzerView").classList.remove("active");
+        $("#dashboardView").style.display = "block";
+        await loadDashboard();
+      }
+    });
+  });
+}
+
+async function loadDashboard() {
+  try {
+    const { complaints } = await api("/api/v1/complaints");
+    state.complaints = complaints || [];
+
+    const groups = {};
+    state.complaints.forEach((c) => {
+      if (c.pincode) {
+        groups[c.pincode] = groups[c.pincode] || [];
+        groups[c.pincode].push(c);
+      }
+    });
+
+    const activeComplaints = state.complaints.filter((c) => c.status !== "resolved");
+    const uniquePincodes = Object.keys(groups);
+
+    let activeClusters = 0;
+    for (const pin in groups) {
+      const activePinComplaints = groups[pin].filter((c) => c.status !== "resolved");
+      if (activePinComplaints.length >= state.clusterThreshold) {
+        activeClusters++;
+      }
+    }
+
+    $("#db-total-complaints").textContent = activeComplaints.length;
+    $("#db-total-pincodes").textContent = uniquePincodes.length;
+    $("#db-total-clusters").textContent = activeClusters;
+
+    renderDashboardList(groups);
+
+    // Initialize map if not yet done
+    if (!state.map) {
+      state.map = L.map("map").setView([20.5937, 78.9629], 5);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+      }).addTo(state.map);
+    }
+
+    // Force Leaflet map recalculation once displayed
+    setTimeout(() => {
+      state.map.invalidateSize();
+      renderMapMarkers(groups);
+    }, 50);
+
+  } catch (err) {
+    toast("Failed to load dashboard data: " + err.message, "err");
+  }
+}
+
+function renderDashboardList(groups) {
+  const container = $("#complaintsList");
+  if (state.complaints.length === 0) {
+    container.innerHTML = '<p class="pane-hint">No active complaints filed yet. File a complaint under the Analyzer tab to populate the dashboard.</p>';
+    return;
+  }
+
+  let html = "";
+  const sortedPincodes = Object.keys(groups).sort((a, b) => {
+    const statusA = getPincodeStatus(groups[a]);
+    const statusB = getPincodeStatus(groups[b]);
+    const rank = { cluster: 4, unsafe: 3, caution: 2, safe: 1 };
+    return rank[statusB] - rank[statusA];
+  });
+
+  sortedPincodes.forEach((pin) => {
+    const list = groups[pin];
+    const status = getPincodeStatus(list);
+
+    list.forEach((c) => {
+      const isCluster = status === "cluster" && c.status !== "resolved";
+
+      html += `
+        <div class="complaint-card">
+          <div class="cc-top">
+            <span class="cc-id">${esc(c.id)}</span>
+            <span class="cc-verdict ${c.verdict}">${esc(c.verdict)}</span>
+          </div>
+          <div class="cc-loc">${esc(c.location || "Pincode " + pin)}</div>
+          <div class="cc-meta">
+            <span>Status: <b>${esc(c.status)}</b></span>
+            <span>PIN: ${esc(pin)}</span>
+          </div>
+          ${isCluster ? `<button class="cc-btn" onclick="window.viewCollectivePetition('${pin}')">🏘️ View Collective Petition</button>` : ""}
+        </div>
+      `;
+    });
+  });
+
+  container.innerHTML = html;
+}
+
+function renderMapMarkers(groups) {
+  if (!state.map) return;
+
+  state.markers.forEach((m) => m.remove());
+  state.markers = [];
+
+  const colorMap = {
+    safe: "#35d39a",
+    caution: "#f5b73d",
+    unsafe: "#ff5d5d",
+    cluster: "#d91e1e",
+  };
+
+  for (const pin in groups) {
+    const list = groups[pin];
+    const status = getPincodeStatus(list);
+    const active = list.filter((c) => c.status !== "resolved");
+    if (active.length === 0) continue;
+
+    const coords = getCoordinates(pin);
+    const radius = status === "cluster" ? 12 : 7;
+
+    const marker = L.circleMarker(coords, {
+      radius: radius,
+      fillColor: colorMap[status],
+      color: status === "cluster" ? "#ffffff" : colorMap[status],
+      weight: status === "cluster" ? 2 : 1,
+      opacity: 0.9,
+      fillOpacity: 0.85,
+      className: status === "cluster" ? "pulse-marker" : "",
+    }).addTo(state.map);
+
+    const worstVerdictLabel = status.toUpperCase();
+    const countText = `${active.length} active case${active.length > 1 ? "s" : ""}`;
+    const contaminants = new Set();
+    active.forEach((c) => (c.breached_parameters || []).forEach((p) => contaminants.add(p)));
+    const contNames = [...contaminants].map((p) => state.parameterLabels?.[p] || p).join(", ");
+
+    let popupHtml = `
+      <div class="mp-popup">
+        <div class="mp-title">Pincode ${esc(pin)}</div>
+        <div class="mp-badge ${status}">${worstVerdictLabel}</div>
+        <div class="mp-loc">${countText}</div>
+        ${contNames ? `<div class="mp-desc">Contaminants: <b>${esc(contNames)}</b></div>` : ""}
+        ${status === "cluster" ? `<button class="mp-btn" onclick="window.viewCollectivePetition('${pin}')">🏘️ Collective Petition</button>` : ""}
+      </div>
+    `;
+
+    marker.bindPopup(popupHtml);
+    state.markers.push(marker);
+  }
+}
+
+function showCollectiveModal(pincode) {
+  const pinComplaints = state.complaints.filter((c) => c.pincode === pincode && c.status !== "resolved");
+  const draftText = generateCollectiveDraft(pincode, pinComplaints);
+  $("#collectiveDraftText").textContent = draftText;
+  $("#collectiveModal").style.display = "flex";
+  state.currentModalPincode = pincode;
+  state.currentModalDraft = draftText;
+}
+
+function closeCollectiveModal() {
+  $("#collectiveModal").style.display = "none";
+}
+
+function generateCollectiveDraft(pincode, pinComplaints) {
+  const counts = {};
+  pinComplaints.forEach((c) => {
+    (c.breached_parameters || []).forEach((param) => {
+      counts[param] = (counts[param] || 0) + 1;
+    });
+  });
+  let sharedContaminant = "contamination";
+  let maxCount = 0;
+  for (const param in counts) {
+    if (counts[param] > maxCount) {
+      maxCount = counts[param];
+      sharedContaminant = param;
+    }
+  }
+  const label = state.parameterLabels?.[sharedContaminant] || sharedContaminant;
+
+  return `To,
+The Municipal Commissioner / District Magistrate,
+${pincode}.
+
+Subject: Collective complaint — ${label} contamination affecting multiple households in ${pincode}
+
+Respected Sir/Madam,
+
+${pinComplaints.length} households in pincode ${pincode} have independently reported drinking water exceeding the IS 10500:2012 limit for ${label}. This is no longer an isolated case but a public-health pattern in the area, and warrants municipal-level investigation and remediation.
+
+We jointly request an area-wide water-quality survey and corrective action.
+
+Yours faithfully,
+Residents of ${pincode}`;
+}
+
+window.viewCollectivePetition = (pincode) => {
+  showCollectiveModal(pincode);
+};
 
 init();

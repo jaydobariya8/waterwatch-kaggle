@@ -23,8 +23,12 @@ from .base import Agent, AgentContext
 # reads the measured value, not the formula.
 _NUMBER_RE = re.compile(r"(?<![A-Za-z0-9.])\d+(?:\.\d+)?(?![A-Za-z0-9])")
 _PINCODE_RE = re.compile(r"\b(\d{6})\b")
-_SAMPLE_RE = re.compile(r"(?:sample|sample\s*id|sample\s*no|sample\s*ref|ref)\s*[:#]?\s*([A-Z0-9\-/]+)", re.I)
+_SAMPLE_RE = re.compile(r"(?:sample\s*id|sample\s*no|sample\s*ref|sample|ref)\s*[:#]?\s*([A-Z0-9\-/]+)", re.I)
 _DATE_RE = re.compile(r"(\d{1,2}[-/][0-9]{1,2}[-/]\d{2,4}|\d{4}-\d{2}-\d{2}|\d{1,2}\s+[A-Za-z]+\s+\d{4})")
+_LOCATION_RE = re.compile(
+    r"\b(?:location|village/area|sampling\s+point|village|area|address)\s*[:#-]\s*(.+?)(?=\s{2,}|pin|pincode|$)",
+    re.I
+)
 
 
 def _load_samples() -> dict[str, dict[str, Any]]:
@@ -75,6 +79,13 @@ def parse_text(text: str) -> ParsedReport:
         pin = _PINCODE_RE.search(text)
         pincode = pin.group(1) if pin else None
 
+    location = None
+    for line in lines:
+        loc_match = _LOCATION_RE.search(line)
+        if loc_match:
+            location = loc_match.group(1).strip(" :\t|-")
+            break
+
     sample_match = _SAMPLE_RE.search(text)
     date_match = _DATE_RE.search(text)
 
@@ -86,6 +97,7 @@ def parse_text(text: str) -> ParsedReport:
 
     return ParsedReport(
         sample_id=sample_match.group(1) if sample_match else None,
+        location=location,
         pincode=pincode,
         collected_on=date_match.group(1) if date_match else None,
         source="text",

@@ -51,9 +51,9 @@
       "title": "Clean treated supply — passes BIS",
       "subtitle": "Well-run RWA borewell with treatment · the 'all clear' case",
       "location": "Sector 21, Gurugram, Haryana",
-      "pincode": "110001",
+      "pincode": "122001",
       "collected_on": "2025-05-21",
-      "text": "WATER QUALITY ANALYSIS\nLab: NABL Accredited Lab, Gurugram\nSample ID: HR-GGN-5521\nLocation: Sector 21 RWA, Gurugram  PIN: 110001\nCollected on: 21-05-2025\nSource: Treated borewell (RO + UV)\n\nParameter                 Result    Unit\npH                        7.2\nTurbidity                 0.4       NTU\nTotal Dissolved Solids    320       mg/L\nTotal Hardness            150       mg/L\nChloride                  120       mg/L\nFluoride                  0.6       mg/L\nNitrate                   10        mg/L\nArsenic                   0.002     mg/L\nIron                      0.1       mg/L\nLead                      0.002     mg/L\nResidual Free Chlorine    0.3       mg/L\nTotal Coliform            0         MPN/100mL\nE. coli                   0         MPN/100mL",
+      "text": "WATER QUALITY ANALYSIS\nLab: NABL Accredited Lab, Gurugram\nSample ID: HR-GGN-5521\nLocation: Sector 21 RWA, Gurugram  PIN: 122001\nCollected on: 21-05-2025\nSource: Treated borewell (RO + UV)\n\nParameter                 Result    Unit\npH                        7.2\nTurbidity                 0.4       NTU\nTotal Dissolved Solids    320       mg/L\nTotal Hardness            150       mg/L\nChloride                  120       mg/L\nFluoride                  0.6       mg/L\nNitrate                   10        mg/L\nArsenic                   0.002     mg/L\nIron                      0.1       mg/L\nLead                      0.002     mg/L\nResidual Free Chlorine    0.3       mg/L\nTotal Coliform            0         MPN/100mL\nE. coli                   0         MPN/100mL",
       "expected": {
         "verdict": "SAFE",
         "must_breach": [],
@@ -65,9 +65,9 @@
       "title": "Hard, high-TDS water — within permissible (caution)",
       "subtitle": "Aesthetic exceedances, no acute health risk · the 'caution' case",
       "location": "Rajkot, Gujarat",
-      "pincode": "342001",
+      "pincode": "360001",
       "collected_on": "2025-04-08",
-      "text": "WATER TEST REPORT\nLab: Gujarat Jal Lab, Rajkot\nSample: GJ-RAJ-3380\nArea: Rajkot   PIN: 342001\nDate: 08-04-2025\nSource: Municipal supply\n\nParameter                 Value     Unit\npH                        7.8\nTurbidity                 0.9       NTU\nTotal Dissolved Solids    1450      mg/L\nTotal Hardness            520       mg/L\nChloride                  600       mg/L\nSulphate                  260       mg/L\nFluoride                  0.8       mg/L\nNitrate                   18        mg/L\nArsenic                   0.004     mg/L\nTotal Coliform            0         MPN/100mL",
+      "text": "WATER TEST REPORT\nLab: Gujarat Jal Lab, Rajkot\nSample: GJ-RAJ-3380\nArea: Rajkot   PIN: 360001\nDate: 08-04-2025\nSource: Municipal supply\n\nParameter                 Value     Unit\npH                        7.8\nTurbidity                 0.9       NTU\nTotal Dissolved Solids    1450      mg/L\nTotal Hardness            520       mg/L\nChloride                  600       mg/L\nSulphate                  260       mg/L\nFluoride                  0.8       mg/L\nNitrate                   18        mg/L\nArsenic                   0.004     mg/L\nTotal Coliform            0         MPN/100mL",
       "expected": {
         "verdict": "CAUTION",
         "must_breach": [],
